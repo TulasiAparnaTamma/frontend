@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: var(--theme-surface);
+  --color-surface-hover: var(--theme-surface-hover);
+  --color-card: var(--theme-card);
+  --color-card-hover: var(--theme-card-hover);
+  --color-border: var(--theme-border);
+  --color-border-muted: var(--theme-border-muted);
+  
+  --color-primary: var(--theme-primary);
+  --color-primary-hover: var(--theme-primary-hover);
+  --color-secondary: var(--theme-secondary);
+  --color-accent: var(--theme-accent);
+  
+  --color-text-primary: var(--theme-text-primary);
+  --color-text-secondary: var(--theme-text-secondary);
+  --color-text-muted: var(--theme-text-muted);
+  --color-text-inverse: var(--theme-text-inverse);
+
+  --font-sans: "Plus Jakarta Sans", "Inter", "system-ui", "sans-serif";
+  
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.45);
+  --shadow-neon: 0 0 25px rgba(99, 102, 241, 0.5);
+  --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  --animate-gradient-x: gradient-x 5s ease infinite;
+}
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@layer base {
+  :root {
+    --theme-surface: #f8fafc;
+    --theme-surface-hover: #f1f5f9;
+    --theme-card: #ffffff;
+    --theme-card-hover: #f8fafc;
+    --theme-border: #e2e8f0;
+    --theme-border-muted: #f1f5f9;
+    
+    --theme-primary: #4f46e5;
+    --theme-primary-hover: #4338ca;
+    --theme-secondary: #7e22ce;
+    --theme-accent: #0284c7;
+
+    --theme-text-primary: #0f172a;
+    --theme-text-secondary: #334155;
+    --theme-text-muted: #64748b;
+    --theme-text-inverse: #ffffff;
+  }
+
+  .dark {
+    --theme-surface: #020617;
+    --theme-surface-hover: #0f172a;
+    --theme-card: #0f172a;
+    --theme-card-hover: #1e293b;
+    --theme-border: #334155;
+    --theme-border-muted: #1e293b;
+    
+    --theme-primary: #6366f1;
+    --theme-primary-hover: #818cf8;
+    --theme-secondary: #a855f7;
+    --theme-accent: #06b6d4;
+
+    --theme-text-primary: #f8fafc;
+    --theme-text-secondary: #cbd5e1;
+    --theme-text-muted: #94a3b8;
+    --theme-text-inverse: #0f172a;
+  }
+
+  body {
+    @apply bg-surface text-text-primary antialiased font-sans selection:bg-primary/30 selection:text-text-primary;
+    min-height: 100vh;
+  }
+  
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+    background-image: 
+      radial-gradient(at 0% 0%, var(--theme-primary) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, var(--theme-secondary) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, var(--theme-accent) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, var(--theme-primary) 0px, transparent 50%);
+    opacity: 0.05;
+    pointer-events: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-text-primary;
+  }
+}
+
+@layer components {
+  /* Replace generic glass with semantic card */
+  .card {
+    @apply bg-card border border-border rounded-2xl shadow-sm transition-all duration-300;
+  }
+  
+  .card-hover {
+    @apply hover:bg-card-hover hover:border-border-muted hover:shadow-md;
+  }
+
+
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent animate-gradient-x bg-[length:200%_200%];
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden bg-primary text-text-inverse px-8 py-3 rounded-2xl font-bold transition-all duration-300 hover:scale-[1.05] active:scale-[0.95] hover:shadow-neon hover:bg-primary-hover border-transparent;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-surface;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-text-muted/30 rounded-full hover:bg-text-muted/50 transition-colors;
+}
