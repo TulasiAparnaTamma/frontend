@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Users, Clock, ArrowRight } from 'lucide-react';
-import { api } from '../../store/authStore';
+import { BookOpen, Users, Clock, ArrowRight, Play } from 'lucide-react';
+import useAuthStore, { api } from '../../store/authStore';
 import { Button } from '../../components/ui/Button';
 
 const ManageCourses = () => {
+  const { user } = useAuthStore();
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  const isFaculty = user?.role === 'faculty';
+
   useEffect(() => {
-    // In a real app, you might have a specific endpoint for /api/courses/faculty/me
-    // Here we'll just fetch all and assume the backend filters if needed, 
-    // or we filter client-side if we get all courses.
     const fetchCourses = async () => {
       try {
         const res = await api.get('/courses');
@@ -26,21 +26,33 @@ const ManageCourses = () => {
     fetchCourses();
   }, []);
 
-  if (isLoading) return <div className="p-8 text-center">Loading courses...</div>;
+  if (isLoading) return <div className="p-8 text-center text-text-muted">Loading courses...</div>;
 
   return (
     <div className="space-y-8 pb-12">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-text-primary tracking-tight">Manage Courses</h1>
-          <p className="text-text-muted mt-1">Select a course to manage students, materials, and attendance.</p>
+          <h1 className="text-3xl font-bold text-text-primary tracking-tight">
+            {isFaculty ? 'Manage Courses' : 'My Courses'}
+          </h1>
+          <p className="text-text-muted mt-1">
+            {isFaculty 
+              ? 'Select a course to manage students, materials, and attendance.' 
+              : 'Access your enrolled subjects and learning materials.'}
+          </p>
         </div>
-        <Button onClick={() => navigate('/dashboard/courses/new')}>Create New</Button>
+        {isFaculty && (
+          <Button onClick={() => navigate('/dashboard/courses/new')}>Create New</Button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map(course => (
-          <div key={course._id} className="card overflow-hidden flex flex-col group cursor-pointer hover:border-primary/50 transition-colors" onClick={() => navigate(`/dashboard/courses/${course._id}/manage`)}>
+          <div 
+            key={course._id} 
+            className="card overflow-hidden flex flex-col group cursor-pointer hover:border-primary/50 transition-colors" 
+            onClick={() => navigate(`/dashboard/courses/${course._id}/${isFaculty ? 'manage' : 'play'}`)}
+          >
             <div className="h-40 bg-surface-hover relative">
               <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -57,8 +69,8 @@ const ManageCourses = () => {
                   <Users className="h-4 w-4 text-primary" />
                   <span className="font-bold">{course.enrolledStudents?.length || 0}</span>
                 </div>
-                <div className="flex items-center gap-1 text-primary group-hover:underline">
-                  Manage <ArrowRight className="h-4 w-4" />
+                <div className="flex items-center gap-1 text-primary group-hover:underline font-bold">
+                  {isFaculty ? 'Manage' : 'Start Learning'} <ArrowRight className="h-4 w-4" />
                 </div>
               </div>
             </div>
@@ -66,7 +78,7 @@ const ManageCourses = () => {
         ))}
         {courses.length === 0 && (
           <div className="col-span-full text-center py-12 text-text-muted">
-            No courses found. Create one to get started!
+            {isFaculty ? 'No courses found. Create one to get started!' : 'You are not enrolled in any courses yet.'}
           </div>
         )}
       </div>
