@@ -34,6 +34,7 @@ const Navbar = () => {
   }, [isAuthenticated, user]);
 
   const handleLogout = async () => {
+    console.log('Logout button clicked');
     await logout();
     navigate('/');
   };

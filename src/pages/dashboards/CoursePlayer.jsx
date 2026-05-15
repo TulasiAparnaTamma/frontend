@@ -89,11 +89,11 @@ const CoursePlayer = () => {
                 {activeLesson?.description || course.description}
               </p>
             </div>
-            
+
             {activeLesson?.pdfUrl && (
-              <a 
-                href={activeLesson.pdfUrl.startsWith('http') ? activeLesson.pdfUrl : `http://localhost:5001${activeLesson.pdfUrl}`} 
-                target="_blank" 
+              <a
+                href={activeLesson.pdfUrl.startsWith('http') ? activeLesson.pdfUrl : `http://localhost:5001${activeLesson.pdfUrl}`}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-hover transition-all shadow-lg shadow-primary/20 whitespace-nowrap"
               >
@@ -105,7 +105,7 @@ const CoursePlayer = () => {
           <div className="pt-6 border-t border-border">
             <h3 className="font-bold text-text-primary mb-2">About this Lesson</h3>
             <p className="text-sm text-text-secondary leading-relaxed">
-              In this session, we dive deep into {activeLesson?.title || course.title}. 
+              In this session, we dive deep into {activeLesson?.title || course.title}.
               Make sure to download the attached study materials and follow along with the video lecture.
             </p>
           </div>
@@ -124,10 +124,10 @@ const CoursePlayer = () => {
               <span className="text-[10px] font-bold text-text-muted">0% Complete</span>
             </div>
           </div>
-          
+
           <div className="overflow-y-auto flex-1 custom-scrollbar">
             {course.modules?.length === 0 ? (
-               <div className="p-8 text-sm text-text-muted text-center italic">No content uploaded yet.</div>
+              <div className="p-8 text-sm text-text-muted text-center italic">No content uploaded yet.</div>
             ) : (
               course.modules?.map((module, mIdx) => (
                 <div key={module._id || mIdx} className="border-b border-border last:border-b-0">
@@ -139,9 +139,8 @@ const CoursePlayer = () => {
                       <button
                         key={lesson._id || lIdx}
                         onClick={() => setActiveLesson(lesson)}
-                        className={`w-full text-left px-6 py-4 text-sm flex items-start gap-4 hover:bg-surface-hover transition-all group ${
-                          activeLesson?.title === lesson.title ? 'bg-primary/5 border-l-4 border-primary' : 'border-l-4 border-transparent'
-                        }`}
+                        className={`w-full text-left px-6 py-4 text-sm flex items-start gap-4 hover:bg-surface-hover transition-all group ${activeLesson?.title === lesson.title ? 'bg-primary/5 border-l-4 border-primary' : 'border-l-4 border-transparent'
+                          }`}
                       >
                         <div className={`mt-0.5 p-1.5 rounded-lg transition-colors ${activeLesson?.title === lesson.title ? 'bg-primary text-white' : 'bg-surface-hover text-text-muted group-hover:text-primary'}`}>
                           {lesson.videoUrl ? (

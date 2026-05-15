@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 export const api = axios.create({
-  baseURL: 'http://localhost:5001/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5001/api',
   withCredentials: true,
 });
 
@@ -20,6 +20,7 @@ const useAuthStore = create((set) => ({
       localStorage.setItem('user', JSON.stringify(response.data));
       set({ user: response.data, isAuthenticated: true, isLoading: false });
     } catch (error) {
+      console.error('Login error:', error.response?.data || error.message);
       set({ error: error.response?.data?.message || 'Login failed', isLoading: false });
       throw error;
     }
@@ -32,6 +33,7 @@ const useAuthStore = create((set) => ({
       localStorage.setItem('user', JSON.stringify(response.data));
       set({ user: response.data, isAuthenticated: true, isLoading: false });
     } catch (error) {
+      console.error('Registration error:', error.response?.data || error.message);
       set({ error: error.response?.data?.message || 'Registration failed', isLoading: false });
       throw error;
     }
