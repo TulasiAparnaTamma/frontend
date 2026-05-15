@@ -21,7 +21,7 @@ const Navbar = () => {
       }).catch(err => console.error(err));
 
       // Setup Socket.io
-      const socket = io('http://localhost:5001');
+      const socket = io('https://backend-gc76.onrender.com');
       socket.emit('join', user._id);
 
       socket.on('newNotification', (notification) => {

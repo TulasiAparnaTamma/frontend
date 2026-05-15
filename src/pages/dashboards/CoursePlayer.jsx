@@ -92,7 +92,7 @@ const CoursePlayer = () => {
 
             {activeLesson?.pdfUrl && (
               <a
-                href={activeLesson.pdfUrl.startsWith('http') ? activeLesson.pdfUrl : `http://localhost:5001${activeLesson.pdfUrl}`}
+                href={activeLesson.pdfUrl.startsWith('http') ? activeLesson.pdfUrl : `https://backend-gc76.onrender.com${activeLesson.pdfUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-hover transition-all shadow-lg shadow-primary/20 whitespace-nowrap"
